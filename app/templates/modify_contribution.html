@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{# Extends the base HTML template I created and imports Flask-Bootstrap's WTF macro #}
+{# Flask-Bootstrap's WTF macro takes as an argument a Flask-WTF form object ; this object can be passed directly to the
+template via the render_template() method in the relevant /routes.py module. #}
+
+{% block unique_content %}
+    <h1>Modifier</h1>
+    <h3>Contribution ancienne</h3>
+        <table class="table table-hover" width="100%">
+            <tr>
+                <th style="width:25%">Date</th>
+                <th style="width:25%">Lieu</th>
+                <th style="width:25%">Opéra</th>
+                <th style="width:25%">Citation</th>
+            </tr>
+            <tr>
+                <td style="width:20%">
+                    {# Get the weekday #}
+                        {% if contribution.date_performance.weekday() == 0 %}
+                            Lundi
+                        {% elif contribution.date_performance.weekday() == 1 %}
+                            Mardi
+                        {% elif contribution.date_performance.weekday() == 2 %}
+                            Mercredi
+                        {% elif contribution.date_performance.weekday() == 3 %}
+                            Jeudi
+                        {% elif contribution.date_performance.weekday() == 4 %}
+                            Vendredi
+                        {% elif contribution.date_performance.weekday() == 5 %}
+                            Samedi
+                        {% elif contribution.date_performance.weekday() == 6 %}
+                            Dimanche
+                        {% endif %} <br>
+                    {{ contribution.date_performance.date() }}
+                </td>
+                <td style="width:20%">{{ contribution.commune_name }}</td>
+                <td style="width:20%">{{ contribution.title }} <br>({{ contribution.date_creation.year }})</td>
+                <td style="width:20%">{{ contribution.source }}</td>
+            </tr>
+        </table>
+    {{ wtf.quick_form(form) }}
+{% endblock %}

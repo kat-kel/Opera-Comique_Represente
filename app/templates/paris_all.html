@@ -1,0 +1,44 @@
+{% extends "paris_base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block subtemplate_content %}
+
+<span class="text-center"><h5>Il y a {{ count }} représentations enregistrées.</h5></span>
+<table class="table table-hover" width="100%">
+    <tr>
+        <th style="width:30%">Représentation</th>
+        <th style="width:40%">Titre</th>
+        <th style="width:10%">Actes</th>
+        <th style="width:20%">Âge (ans)</th>
+    </tr>
+    {% for i in query %}
+                <tr>
+                    <td style="width:20%">
+                        {# Get the weekday #}
+                            {% if i.date_performance.weekday() == 0 %}
+                                Lundi
+                            {% elif i.date_performance.weekday() == 1 %}
+                                Mardi
+                            {% elif i.date_performance.weekday() == 2 %}
+                                Mercredi
+                            {% elif i.date_performance.weekday() == 3 %}
+                                Jeudi
+                            {% elif i.date_performance.weekday() == 4 %}
+                                Vendredi
+                            {% elif i.date_performance.weekday() == 5 %}
+                                Samedi
+                            {% elif i.date_performance.weekday() == 6 %}
+                                Dimanche
+                            {% endif %} <br>
+                        {{ i.date_performance.date() }}
+                    </td>
+                    <td style="width:20%">{{ i.title }} <br>({{ i.date_creation.year }})</td>
+                    <td style="width:20%">{{ i.acts }}</td>
+                    <td style="width:20%">{{ '%0.3f' | format(
+                                                        (i.date_performance - i.date_creation).days
+                                                        /365
+                                                        )|float }}</td>
+                </tr>
+    {% endfor %}
+</table>
+{% endblock %}

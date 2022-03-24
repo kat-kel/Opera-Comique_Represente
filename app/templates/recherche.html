@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block unique_content %}
+{% block title %} {{title}} {%endblock%}
+
+{% block corps %}
+<h1>{{titre}}</h1>
+
+    {% if province and paris %}
+    <h4>Province</h4>
+    <p>Il y a {{province|length}} représentations enregistrées dont l'opéra répond à votre requête :</p>
+        <ul>
+            {% for i in province %}
+                <li><a href="{{url_for('main.contributions_all', title=i.title) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
+            {% endfor %}
+        </ul>
+    <h4>L'Opéra-Comique à Paris</h4>
+    <p>Il y a {{count}} représentations enregistrées dont l'opéra répond à votre requête :</p>
+        <ul>
+            {% for i in paris %}
+                <li><a href="{{url_for('main.paris_all', title=i.title) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
+            {% endfor %}
+        </ul>
+
+    {% elif province %}
+    <h4>Province</h4>
+    <p>Il y a {{province|length}} représentations enregistrées dont l'opéra répond à votre requête :</p>
+        <ul>
+            {% for i in province %}
+                <li><a href="{{url_for('main.contributions_all', title=i.title) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
+            {% endfor %}
+        </ul>
+
+    {% elif paris %}
+    <h4>L'Opéra-Comique à Paris</h4>
+    <p>Il y a {{count}} représentations enregistrées dont l'opéra répond à votre requête :</p>
+        <ul>
+            {% for i in paris %}
+                <li><a href="{{url_for('main.paris_all', title=i.title) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+        Il n'y a pas de résultat qui répond à votre requête.
+    {% endif %}
+{% endblock %}
+{% endblock %}

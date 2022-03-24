@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block unique_content %}
+    <table class="table table-hover">
+        <tr>
+            <td width="256px"><img src="{{ user.avatar(256) }}"></td>
+            <td>
+                <h1>Nom d'utilisateur: {{ user.username }}</h1>
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+                {% if user.last_seen %}<p>Dernière connection de compte: {{ user.last_seen }}</p>{% endif %}
+                {% if user == current_user %}
+                <p><a href="{{ url_for('auth.edit_profile') }}">Modifiez votre profil d'utilisateur</a></p>{% endif %}
+            </td>
+        </tr>
+    </table>
+
+    <table class="table table-hover" width="100%">
+        <tr>
+            <th style="width:20%">Représentation</th>
+            <th style="width:20%">Commune</th>
+            <th style="width:20%">Titre</th>
+            <th style="width:20%">Ajouté</th>
+            <th style="width:20%">Mettre à jour</th>
+        </tr>
+    {% for contribution in contributions %}
+        <tr>
+            <td>{{ contribution.date_performance.date() }}</td>
+            <td>{{ contribution.commune_name }}</td>
+            <td>{{ contribution.title }} <br>({{ contribution.date_creation.year }})</td>
+            <td>{{ contribution.timestamp }}</td>
+            <td>
+                <a href="{{ url_for('main.modify_contribution', username=user.username, contributionid=contribution.id) }}">Modifier</a><br>
+                <a href="{{ url_for('main.delete_contribution', username=user.username, contributionid=contribution.id) }}">Supprimer</a>
+            </td>
+        </tr>
+
+    {% endfor %}
+    </table>
+    <nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> Contributions plus récentes
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    Contributions plus anciennes <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}

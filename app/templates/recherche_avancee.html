@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block unique_content %}
+<span class="text-center"><h1>L'opéra-comique en province</h1></span>
+<span class="text-center"><h3>Recherche avancée</h3></span>
+
+    {{ wtf.quick_form(form) }}
+{% endblock %}

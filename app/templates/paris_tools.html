@@ -1,0 +1,15 @@
+{% extends "paris_base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block subtemplate_content %}
+
+    <span class="text-center"><h4>Regarder toutes les représentations à Paris dans une seule <a href="{{ url_for('main.paris_all') }}">page.</a></h5></span>
+
+    <span class="text-center"><h3>L'analyse du répertoire</h3></span>
+    <h4>Collaborations</h4>
+
+
+    <h5>Regarder toutes les collaborations (avant 1850) qu'une autrice ou un auteur a faite avec des autres créatrices et créateurs de l'opéra-comique.</h5>
+    {{ wtf.quick_form(form) }}
+
+{% endblock %}

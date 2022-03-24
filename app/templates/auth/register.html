@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{# Extends the base HTML template I created and imports Flask-Bootstrap's WTF macro #}
+{# Flask-Bootstrap's WTF macro takes as an argument a Flask-WTF form object ; this object can be passed directly to the
+template via the render_template() method in the relevant /routes.py module. #}
+
+{% block unique_content %}
+    <h1>Créer votre compte</h1>
+    <h3>Des comptes d'utilisateur sont utilisés pour contribuer des représentations d'opéra-comique à la base de donneés.</h3>
+    <p>Le formulaire vous demande votre nom et prénom afin de reconnaître votre contribution au projet sur la page de mentions.
+        Le nom que vous fournez sera lisible <a href="{{ url_for('main.mentions') }}">ici</a>.</p>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+{% endblock %}

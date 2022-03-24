@@ -1,0 +1,84 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block scripts %}
+{{ super () }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+{% endblock %}
+
+<title>{% block title %}
+    {% if title %}{{ title }} - Opéra-Comique Représenté{% else %}Opéra-Comique Représenté{% endif %}
+{% endblock %}</title>
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                {# Create the collapsed navigation bar #}
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                {# Create the navigation bar's header on the left-most side, which links to the homepage and has a search #}
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">L'Opéra-Comique Représenté</a>
+                <form class="form-inline" action="{{url_for("main.recherche")}}" method="GET">
+                    <input class="form-control" type="search" name="keyword" placeholder="Titre d'opéra" aria-label="Recherche">
+                    <button class="btn btn-outline-info" type="submit">Rechercher</button>
+                </form>
+            </div>
+
+
+            {# Divides the rest of the navigation bar's links between left-aligned links and right-aligned links #}
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                {# Links concerning a user's account are stationed on the right side of the page #}
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_anonymous %}
+                    <li><a href="{{ url_for('auth.login') }}">Connecter</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('auth.user', username=current_user.username) }}">Profil</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Déconnecter</a></li>
+                    {% endif %}
+                </ul>
+                {# Links for main pages #}
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('main.index') }}">Accueil</a></li>
+                    <li><a href="{{ url_for('main.contributions') }}">Représentations en province</a></li>
+                    <li><a href="{{ url_for('main.paris_tool') }}">Représentations à l'Opéra-Comique</a></li>
+                    <li><a href="{{ url_for('main.contribuer') }}">Contribuer</a></li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+{% endblock %}
+
+  </head>
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# Because Flask-Bootstrap uses a 'content' block, my application's content block needs a unique name #}
+        {% block unique_content %}
+        {% endblock %}
+
+    </div>
+
+{%- block footer %}
+<footer class="text-center">
+    <div class="container">
+        <a class="btn" href="{{ url_for('main.mentions') }}" role="button">Mentions légales &copy; 2022</a>
+    </div>
+</footer>
+{%- endblock footer %}
+
+{%- endblock content %}

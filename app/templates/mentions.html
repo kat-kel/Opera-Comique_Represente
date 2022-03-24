@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{# Extends the base HTML template I created and imports Flask-Bootstrap's WTF macro #}
+{# Flask-Bootstrap's WTF macro takes as an argument a Flask-WTF form object ; this object can be passed directly to the
+template via the render_template() method in the relevant /routes.py module. #}
+
+{% block unique_content %}
+    <span class="text-center"><h1>Mentions légales</h1></span>
+    <h3>Collaboratrices & Collaborateurs</h3>
+    {% for user in users %}
+    <ul>
+        {{ user.last_name }}, {{ user.first_name }}
+    </ul>
+    {% endfor %}
+    <h3>Éditeur</h3>
+        <p>
+            Kelly Christensen <br>
+            M2, Technologies numériques appliquées à l'histoire <br>
+            École nationale des chartes
+        </p>
+    <h3>Droit d'auteur</h3>
+        <p>
+            Le contenu de ce site est protégé par le droit de la propriété intellectuelle. <br>
+            Toute utilisation des données sans citation du site est interdite. <br>
+            Toute reproduction intégrale ou partielle de ce contenu sans obtention préalable du consentement de son auteur est également interdite.
+        </p>
+{% endblock %}
