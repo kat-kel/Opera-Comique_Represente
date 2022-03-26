@@ -2,13 +2,11 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
-mail = Mail()
 bootstrap = Bootstrap()
 login = LoginManager()
 login.login_view = 'auth.login'
@@ -21,7 +19,6 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
-    mail.init_app(app)
     bootstrap.init_app(app)
     login.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)

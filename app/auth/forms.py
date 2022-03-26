@@ -28,7 +28,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField("Mot de passe", validators=[DataRequired()])
     password2 = PasswordField(
         "Répetez votre mot de passe", validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField("Enregistrez")
+    submit = SubmitField("Enregistrer")
 
     def validate_username(self, username):
         """
@@ -55,32 +55,10 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Veuillez utiliser un autre adresse email")
 
 
-class ResetPasswordRequestForm(FlaskForm):
-    """
-    This form gathers a user's email address to which (if the address matches a user's in the User table) will be sent
-    an email containing a link to the URL '/reset_password/<...>'. This URL will render a form with which the user can
-    update the User table with a new password.
-    """
-    email = StringField("Courriel", validators=[DataRequired(), Email()])
-    submit = SubmitField("Demander un nouveau mot de passe")
-
-
-class ResetPasswordForm(FlaskForm):
-    """
-    This form gathers a user's new password two times; the two inputs must match, to prove the user remembers and can
-    reproduce the password. The route which renders this form, '/reset_password', will commit the new password to the
-    database.
-    """
-    password = PasswordField("Mot de passe", validators=[DataRequired()])
-    password2 = PasswordField(
-        "Répetez votre mot de passe", validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField("Enregistrez votre nouveau mot de passe")
-
-
 class EditProfileForm(FlaskForm):
     username = StringField("Nom d'utilisateur", validators=[DataRequired()])
     about_me = TextAreaField("Affiliation", validators=[Length(min=0, max=140)])
-    submit = SubmitField("Enregistrez")
+    submit = SubmitField("Enregistrer")
 
     def __init__(self, original_username, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)

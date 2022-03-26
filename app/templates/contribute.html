@@ -7,7 +7,9 @@ template via the render_template() method in the relevant /routes.py module. #}
 
 {% block unique_content %}
 <span class="text-center"><h1>L'Opéra-Comique Représenté</h1></span>
-
-{% include '_home.html' %}
+<span class="text-center"><h2>Contribuer à la base de données</h2></span>
+<h4>Enregistrer une représentation qui a lieu en province entre 1820 et 1850.</h4>
+        <p>Rédiger une citation pour la source qui atteste de la représentation, et ensuite entrer les données de la représentation.</p>
+        {{ wtf.quick_form(form) }}
 
 {% endblock %}

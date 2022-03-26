@@ -7,7 +7,7 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 class Config(object):
     """
-    The Config class assigns variables for FOUR FUNCTIONS.
+    The Config class assigns variables for THREE FUNCTIONS.
 
     1. FORMS
         The extension Flask WTForms uses the SECRET_KEY variable with a hidden field to secure forms from malicious user
@@ -19,17 +19,6 @@ class Config(object):
         variable to False.
     3. PAGINATION
         The quantity of queried results rendered on a single page
-    4. EMAIL
-        In order to issue emails, the Flask-Mail extension needs to know five configuration variables: the server, port,
-        Transport Layer Security (TLS), the email address, and the email address's password. Rather than store some of this
-        information in the code of this application, I have let the developer set them as environment variables in the
-        terminal using os.environ.get(). The developer will type in the terminal the following commands after launching
-        the flask app ($ flask run):
-            $ export MAIL_SERVER=smtp.googlemail.com    <---for a Gmail account
-            $ export MAIL_PORT=587
-            $ export MAIL_USE_TLS=1    <---to secure the communication
-            $ export MAIL_USERNAME=<developers-email@gmail.com>
-            $ export MAIL_PASSWORD=<developers-gmail-password>
     """
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'ne-hackez-pas-mon-site'
 
@@ -37,10 +26,3 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     RESULTS_PER_PAGE = 5
-
-    MAIL_SERVER = os.environ.get('MAIL_SERVER')
-    MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
-    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    ADMINS = ['prof.k.christensen@gmail.com']

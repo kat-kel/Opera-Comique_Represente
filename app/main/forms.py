@@ -6,8 +6,7 @@ from wtforms.validators import DataRequired
 class ContributionForm(FlaskForm):
     source = TextAreaField("Citation", validators=[DataRequired()])
     date_performance = DateField("Date", validators=[DataRequired()])
-    opera_id = SelectField("Opéra", coerce=int)  # select one of the primary keys from the Opera table,
-    # though when the form renders in the view it will display the corresponding opera.title
+    opera_id = SelectField("Opéra", coerce=int)
     place_id = SelectField("Lieu", coerce=int)
     submit = SubmitField('Enregistrer')
 
@@ -20,4 +19,10 @@ class AdvancedSearch(FlaskForm):
 
 class CollaboratorForm(FlaskForm):
     person_id = SelectField("Auteur", coerce=int, default=0)
+    submit = SubmitField('Sélectionner')
+
+
+class DateFilterForm(FlaskForm):
+    start = DateField("À partir de", validators=[DataRequired()])
+    end = DateField("Jusqu'à", validators=[DataRequired()])
     submit = SubmitField('Sélectionner')

@@ -14,8 +14,4 @@ template via the render_template() method in the relevant /routes.py module. #}
     </div>
     <br>
     <p>Vous n'avez pas de compte <a href="{{ url_for('auth.register') }}">Créer votre compte</a></p>
-    <p>
-        Mot de passe oublié
-        <a href="{{ url_for('auth.reset_password_request') }}">Réinitialiser</a>
-    </p>
 {% endblock %}

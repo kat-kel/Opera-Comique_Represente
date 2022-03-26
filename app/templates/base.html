@@ -1,13 +1,13 @@
 {% extends 'bootstrap/base.html' %}
 
-{% block scripts %}
-{{ super () }}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-{% endblock %}
+<title>
+    {% block title %}
+    {% if title %}{{ title }} - Opéra-Comique Représenté
+    {% else %}Opéra-Comique Représenté{% endif %}
+    {% endblock %}
+</title>
 
-<title>{% block title %}
-    {% if title %}{{ title }} - Opéra-Comique Représenté{% else %}Opéra-Comique Représenté{% endif %}
-{% endblock %}</title>
+
 
 {% block navbar %}
     <nav class="navbar navbar-default">
@@ -23,7 +23,7 @@
                 </button>
                 {# Create the navigation bar's header on the left-most side, which links to the homepage and has a search #}
                 <a class="navbar-brand" href="{{ url_for('main.index') }}">L'Opéra-Comique Représenté</a>
-                <form class="form-inline" action="{{url_for("main.recherche")}}" method="GET">
+                <form class="form-inline" action="{{url_for("main.search")}}" method="GET">
                     <input class="form-control" type="search" name="keyword" placeholder="Titre d'opéra" aria-label="Recherche">
                     <button class="btn btn-outline-info" type="submit">Rechercher</button>
                 </form>
@@ -46,7 +46,7 @@
                     <li><a href="{{ url_for('main.index') }}">Accueil</a></li>
                     <li><a href="{{ url_for('main.contributions') }}">Représentations en province</a></li>
                     <li><a href="{{ url_for('main.paris_tool') }}">Représentations à l'Opéra-Comique</a></li>
-                    <li><a href="{{ url_for('main.contribuer') }}">Contribuer</a></li>
+                    <li><a href="{{ url_for('main.contribute') }}">Contribuer</a></li>
 
                 </ul>
             </div>
@@ -75,8 +75,9 @@
 
 {%- block footer %}
 <footer class="text-center">
-    <div class="container">
-        <a class="btn" href="{{ url_for('main.mentions') }}" role="button">Mentions légales &copy; 2022</a>
+    <div class="container-fluid" style="width:100%;background-color:LavenderBlush;">
+        Kelly Christensen &copy; 2022 <br>
+        <a class="btn" href="{{ url_for('main.mentions') }}" role="button">Mentions légales</a>
     </div>
 </footer>
 {%- endblock footer %}

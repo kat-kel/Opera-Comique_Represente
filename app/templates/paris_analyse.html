@@ -3,15 +3,15 @@
 
 {% block subtemplate_content %}
 
-    <span class="text-center"><h4>Regarder toutes les représentations à Paris dans une seule <a href="{{ url_for('main.paris_all') }}">page.</a></h4></span>
+    <span class="text-center"><h3><a href="{{ url_for('main.paris_all') }}">Toutes</a> les représentations à Paris entre 1820 et 1850</h3></span>
 
-    <span class="text-center"><h3>L'analyse du répertoire 1750-1850</h3></span>
+    <span class="text-center"><h3>L'analyse du répertoire</h3></span>
     <h4>Collaborations</h4>
 
     <h4> avec {{ person.name }}</h4>
     <table class="table table-hover" width="50%">
         <tr>
-            <th style="width:50">œvre</th>
+            <th style="width:50">œuvre</th>
             <th style="width:50%">collaboratrices et collaborateurs</th>
         </tr>
         {% for work in works %}

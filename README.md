@@ -1,41 +1,31 @@
 # Projet Python
 
+## Requirements
+- Python, version 3 --> [installation instructions](https://realpython.com/installing-python/)
+- virtualenv
+
 ## Instructions (fr)
-
-1. Ouvrir un terminal.
-
-2. Se déplacer avec la commande `cd` vers l'endroit où vous voulez que le dossier `Projet_Python` soit téléchargé sur votre machine. 
-
-3. Taper dans le terminal :
-
-    ```git clone https://github.com/kat-kel/Projet_Python.git```
-  
-    ```cd Projet_Python```
-  
-    ```python3 -m venv venv-projet```
-    
-    ```source venv-projet/bin/activate```
-
-    ```pip install -r requirements.txt```
-
-    ```flask run```
-    
-## Instructions (en)
 
 1. Open a terminal.
 
-2. Move with the `cd` command to wherever you want the folder `Projet_Python` to be downloaded on your computer.
+2. Change directories (aka move) with the command `cd` to wherever you want the folder `Opera-Comique_Represente` to be downloaded. 
 
-3. Type in the terminal:
+3. Clone the project from Github: ```git clone https://github.com/kat-kel/Opera-Comique_Represente.git```
 
-    ```git clone https://github.com/kat-kel/Projet_Python.git```
-  
-    ```cd Projet_Python```
-  
-    ```python3 -m venv venv-projet```
-    
-    ```source venv-projet/bin/activate```
+4. Change to the downloaded directory: ```cd Opera-Comique_Represente```
 
-    ```pip install -r requirements.txt```
+5. Create a virtual environment.
+   * mac, linux: ```python3 -m venv venv-opera```
+   * windows: ```py -m venv venv-opera```
 
-    ```flask run```
+6. Activate the virtual environment.
+   * mac, linux: ```source venv-opera/bin/activate```
+   * windows: ```.\venv-opera\Scripts\activate```
+
+7. In your virtual environment, download the required Python extensions.
+   * mac, linux: ```pip install -r requirements.txt```
+   * windows: ```-m pip install requirements.txt```
+
+8. Run the Flask web application: ```flask run```
+
+9. Load this URL in a browser (not Internet Explorer): http://127.0.0.1:5000/.

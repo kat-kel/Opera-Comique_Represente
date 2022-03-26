@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, DateTime
 from datetime import datetime
+from werkzeug.security import generate_password_hash
 
 
 def main():
     engine = create_engine('sqlite:///bd.db')
-    create_table_contribution(engine)
     create_table_user(engine)
+    create_table_contribution(engine)
 
 
 def create_table_contribution(engine):
@@ -14,6 +15,10 @@ def create_table_contribution(engine):
     opera_78 = datetime.strptime('1825-12-10', '%Y-%m-%d')
     opera_135 = datetime.strptime('1829-01-10', '%Y-%m-%d')
     opera_171 = datetime.strptime('1812-04-04', '%Y-%m-%d')
+    opera_129 = datetime.strptime('1775-02-01', '%Y-%m-%d')
+    opera_229 = datetime.strptime('1827-12-27', '%Y-%m-%d')
+    opera_134 = datetime.strptime('1816-03-05', '%Y-%m-%d')
+    opera_182 = datetime.strptime('1814-02-28', '%Y-%m-%d')
     data = [
         {'source': 'Journal du Havre',
          'date_performance': datetime.strptime('1830-06-08', '%Y-%m-%d'),
@@ -22,7 +27,7 @@ def create_table_contribution(engine):
          'title': 'La Dame blanche',
          'commune_id': 355,
          'commune_name': 'LE HAVRE',
-         'user_id': 99,
+         'user_id': 1,
          'timestamp': datetime.utcnow()},
         {'source': 'Journal du Havre',
          'date_performance': datetime.strptime('1830-06-09', '%Y-%m-%d'),
@@ -31,7 +36,7 @@ def create_table_contribution(engine):
          'title': 'La Dame blanche',
          'commune_id': 355,
          'commune_name': 'LE HAVRE',
-         'user_id': 99,
+         'user_id': 1,
          'timestamp': datetime.utcnow()},
         {'source': 'Journal du Havre',
          'date_performance': datetime.strptime('1830-06-10', '%Y-%m-%d'),
@@ -40,7 +45,7 @@ def create_table_contribution(engine):
          'title': 'La Fiancée',
          'commune_id': 355,
          'commune_name': 'LE HAVRE',
-         'user_id': 99,
+         'user_id': 2,
          'timestamp': datetime.utcnow()},
         {'source': 'Journal du Havre',
          'date_performance': datetime.strptime('1830-06-10', '%Y-%m-%d'),
@@ -49,7 +54,7 @@ def create_table_contribution(engine):
          'title': 'Jean de Paris',
          'commune_id': 355,
          'commune_name': 'LE HAVRE',
-         'user_id': 99,
+         'user_id': 2,
          'timestamp': datetime.utcnow()},
         {'source': 'Journal du Havre',
          'date_performance': datetime.strptime('1830-06-11', '%Y-%m-%d'),
@@ -58,7 +63,7 @@ def create_table_contribution(engine):
          'title': 'La Fiancée',
          'commune_id': 355,
          'commune_name': 'LE HAVRE',
-         'user_id': 99,
+         'user_id': 3,
          'timestamp': datetime.utcnow()},
         {'source': 'Journal du Havre',
          'date_performance': datetime.strptime('1830-06-11', '%Y-%m-%d'),
@@ -67,7 +72,52 @@ def create_table_contribution(engine):
          'title': 'Jean de Paris',
          'commune_id': 355,
          'commune_name': 'LE HAVRE',
-         'user_id': 99,
+         'user_id': 3,
+         'timestamp': datetime.utcnow()},
+        {"source": 'Journal du Havre',
+         'date_performance': datetime.strptime('1830-06-12', '%Y-%m-%d'),
+         'date_creation': opera_129,
+         'opera_id': 129,
+         'title': 'La Fausse magie',
+         'commune_id': 355,
+         'commune_name': 'LE HAVRE',
+         'user_id': 1,
+         'timestamp': datetime.utcnow()},
+        {'source': 'Journal du Havre',
+         'date_performance': datetime.strptime('1830-06-13', '%Y-%m-%d'),
+         'date_creation': opera_229,
+         'opera_id': 229,
+         'title': 'Masaniello ou le Pêcheur napolitain',
+         'commune_id': 355,
+         'commune_name': 'LE HAVRE',
+         'user_id': 1,
+         'timestamp': datetime.utcnow()},
+        {"source": 'Journal du Havre',
+         'date_performance': datetime.strptime('1830-06-13', '%Y-%m-%d'),
+         'date_creation': opera_129,
+         'opera_id': 129,
+         'title': 'La Fausse magie',
+         'commune_id': 355,
+         'commune_name': 'LE HAVRE',
+         'user_id': 1,
+         'timestamp': datetime.utcnow()},
+        {"source": 'Journal du Cher (16 juin 1830), 3',
+         'date_performance': datetime.strptime('1830-06-17', '%Y-%m-%d'),
+         'date_creation': opera_134,
+         'opera_id': 134,
+         'title': 'La Fête du village voisin',
+         'commune_id': 78,
+         'commune_name': 'BOURGES',
+         'user_id': 2,
+         'timestamp': datetime.utcnow()},
+        {"source": 'Journal du Cher (9 juin 1830), 3',
+         'date_performance': datetime.strptime('1830-06-10', '%Y-%m-%d'),
+         'date_creation': opera_182,
+         'opera_id': 182,
+         'title': "Joconde ou les Coureurs d'aventures",
+         'commune_id': 78,
+         'commune_name': 'BOURGES',
+         'user_id': 2,
          'timestamp': datetime.utcnow()}
     ]
     fields = Table(table_name, metadata_obj,
@@ -91,6 +141,22 @@ def create_table_contribution(engine):
 def create_table_user(engine):
     table_name = 'user'
     metadata_obj = MetaData()
+    data = []
+    names = ['Cendrillon', 'Mulan', 'Jasmine']
+    count = 0
+    for i in range(len(names)):
+        count += 1
+        password = 'password?{}'.format(names[i])
+        data.append({
+            "id": count,
+            "username": names[i],
+            "email": "{}@exemple.com".format(names[i]),
+            "password_hash": generate_password_hash(password),
+            "first_name":names[i],
+            "last_name": 'PRINCESSE'.format(count),
+            "about_me": "compte généré automatiquement",
+            "last_seen": datetime.utcnow()
+        })
     fields = Table(table_name, metadata_obj,
                    Column('id', Integer, primary_key=True),
                    Column('username', String(64), index=True, unique=True),
@@ -104,7 +170,7 @@ def create_table_user(engine):
     metadata_obj.drop_all(engine)
     metadata_obj.create_all(engine)
     conn = engine.connect()
-    conn.execute(fields.insert())
+    conn.execute(fields.insert(), data)
 
 
 if __name__ == "__main__":

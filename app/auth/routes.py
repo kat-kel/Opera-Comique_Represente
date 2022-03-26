@@ -3,9 +3,8 @@ from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user, login_required
 from app import db
 from app.auth import bp
-from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, EditProfileForm
+from app.auth.forms import LoginForm, RegistrationForm, EditProfileForm
 from app.models import User, Contribution
-from app.auth.email import send_password_reset_email
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -67,53 +66,6 @@ def register():
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Register',
                            form=form)
-
-
-@bp.route('/reset_password_request', methods=['GET', 'POST'])
-def reset_password_request():
-    """
-    Calls function send_password_reset_email(), imported from module auth/email.py, to the email address (user.email)
-    registered with a user in the database if the user input (form.email.data) matches data in the database. Imported
-    functions/settings 'current_user' and UserMixin's 'is_authenticated' from flask_login check if the browser's cached
-    user input has already satisfied the login conditions, such as a correct password. [22/03/2022]
-    :return: template 'reset_password_request.html', then auth/login() if the template's form is validated
-    """
-    if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
-    form = ResetPasswordRequestForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user:
-            send_password_reset_email(user)
-        flash(
-            'Vérifiez la boîte de réception enregistrée avec ce compte pour un mail vous permettant de réinitialiser votre mot de passe.')
-        return redirect(url_for('auth.login'))
-    return render_template('auth/reset_password_request.html',
-                           title='Réinitialiser votre mot de passe', form=form)
-
-
-@bp.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-    """
-    Updates database (user.password_hash) with new data generated from user input (form.password) and the User model's
-    function set_password(), which relies on the function generate_password_hash() imported from werkzeug.security.
-    Imported functions/settings 'current_user' and UserMixin's 'is_authenticated' from flask_login check if the browser's
-    cached user input has already satisfied the login conditions, such as a correct password. [22/03/2022]
-    :param token: JSON Web Token generated from the User model's function get_reset_password_token()
-    :return: template 'reset_password.html', then auth/login() if the template's form is validated
-    """
-    if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
-    user = User.verify_reset_password_token(token)
-    if not user:
-        return redirect(url_for('main.index'))
-    form = ResetPasswordForm()
-    if form.validate_on_submit():
-        user.set_password(form.password.data)
-        db.session.commit()
-        flash('Votre nouveau mot de passe est enregistré.')
-        return redirect(url_for('auth.login'))
-    return render_template('auth/reset_password.html', form=form)
 
 
 @bp.route('/user/<username>')  # URL finishes with a dynamic element

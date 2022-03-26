@@ -8,6 +8,7 @@ template via the render_template() method in the relevant /routes.py module. #}
 {% block unique_content %}
 
     <span class="text-center"><h1>L'opéra-comique en province</h1></span>
+    <span class="text-center"><h2>1820 - 1850</h2></span>
     <span class="text-center"><h3>Contributions de la communauté</h3></span>
     <span class="text-center"><h4><a href="{{ url_for('main.advanced_search') }}">Recherche avancée</a></h4></span>
 
@@ -36,7 +37,7 @@ template via the render_template() method in the relevant /routes.py module. #}
     </span>
     {% endif %}
     {% endif%}
-
+    {% if count > 0 %}
         <table class="table table-hover" width="100%">
             <tr>
                 <th style="width:20%">Représentation</th>
@@ -77,6 +78,7 @@ template via the render_template() method in the relevant /routes.py module. #}
                         </tr>
             {% endfor %}
         </table>
+    {% endif %}
 
     {% if not all %}
     <nav aria-label="...">
