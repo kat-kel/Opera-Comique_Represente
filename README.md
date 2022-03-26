@@ -1,10 +1,11 @@
 # Projet Python
 
 ## Requirements
-- Python, version 3 --> [installation instructions](https://realpython.com/installing-python/)
-- virtualenv
+* python 3 --> [installation instructions](https://realpython.com/installing-python/)
+* virtualenv [installation instructions](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)
+* git
 
-## Instructions (fr)
+## Instructions for mac, linux
 
 1. Open a terminal.
 
@@ -14,17 +15,11 @@
 
 4. Change to the downloaded directory: ```cd Opera-Comique_Represente```
 
-5. Create a virtual environment.
-   * mac, linux: ```python3 -m venv venv-opera```
-   * windows: ```py -m venv venv-opera```
+5. Create a virtual environment: ```python3 -m venv env-opera```
 
-6. Activate the virtual environment.
-   * mac, linux: ```source venv-opera/bin/activate```
-   * windows: ```.\venv-opera\Scripts\activate```
+6. Activate the virtual environment: ```source venv-opera/bin/activate```
 
-7. In your virtual environment, download the required Python extensions.
-   * mac, linux: ```pip install -r requirements.txt```
-   * windows: ```-m pip install requirements.txt```
+7. In your virtual environment, download the required Python extensions: ```pip install -r requirements.txt```
 
 8. Run the Flask web application: ```flask run```
 
