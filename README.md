@@ -17,10 +17,14 @@
 
 5. Create a virtual environment: ```python3 -m venv env-opera```
 
-6. Activate the virtual environment: ```source venv-opera/bin/activate```
+6. Activate the virtual environment: ```source env-opera/bin/activate```
 
 7. In your virtual environment, download the required Python extensions: ```pip install -r requirements.txt```
 
 8. Run the Flask web application: ```flask run```
 
 9. Load this URL in a browser (not Internet Explorer): http://127.0.0.1:5000/.
+
+10. To immediately explore the user features, without creating an account, feel free to sign in as Cinderella.
+    * username: `Cendrillon`
+    * password: `password?Cendrillon`
