@@ -16,7 +16,7 @@ template via the render_template() method in the relevant /routes.py module. #}
     <span class="text-center"><h5>{{ count }} représentations correspondent à votre recherche.</h5></span>
 
     {% else %}
-    <p>Afin de contribuer des données au projet, veuillez vous connecter ou créer un compte d'utilisateur.
+    <p>Afin de contribuer au projet, veuillez vous connecter ou créer un compte d'utilisateur.
         <a href="{{ url_for('auth.register') }}">Créer un compte</a></p>
     <p>Si vous souhaitez modifier ou supprimer l'une des représentations dans la base de données que vous avez contribuée,
         visitez votre page d'utilisateur.</p>
