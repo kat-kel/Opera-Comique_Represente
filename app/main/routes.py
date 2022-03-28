@@ -51,6 +51,7 @@ def contributions():
     :return: template 'contributions.html'
     """
     keyword = request.args.get('title', None)
+    date = request.args.get('date', None)
     all = False
     if not keyword:
         results = False
@@ -63,7 +64,8 @@ def contributions():
     else:
         results = True
         page = request.args.get('page', 1, type=int)
-        contributions = Contribution.query.filter(Contribution.title.like("%{}%".format(keyword))). \
+        contributions = Contribution.query.filter(Contribution.title.like("%{}%".format(keyword))).\
+            filter(func.date(Contribution.date_performance) >= date). \
             order_by(Contribution.date_performance).paginate(
             page, current_app.config['RESULTS_PER_PAGE'], False)
         count = Contribution.query.filter(Contribution.title.like("%{}%".format(keyword))).count()
@@ -71,6 +73,7 @@ def contributions():
         prev_url = url_for('main.contributions', page=contributions.prev_num) if contributions.has_prev else None
     return render_template('contributions.html', title='Contributions', contributions=contributions.items, count=count,
                        next_url=next_url, prev_url=prev_url, results=results, all=all)
+
 
 @bp.route('/representations_provinciales_ensemble', methods=['GET', 'POST'])
 def contributions_all():
@@ -250,42 +253,63 @@ def paris_all():
     :return: template 'contributions.html', accessible from link at URL 'representations_provinciales' and quick search
     """
     page = request.args.get('page', 1, type=int)
-    keyword = request.args.get('title', None)
+    title = request.args.get('title', None)
+    date = request.args.get('date', None)
     key_start = request.args.get('start', None)
     key_end = request.args.get('end', None)
-    form = False
-    if not keyword:
-        form = DateFilterForm(request.form)
+    if title:  # if the result of simple search, with ?title=#####&date=####-##-## in URL
+        form = False
+        start_results = (datetime.strptime(str(date[:10]), "%Y-%m-%d")-timedelta(1))
+        query = Paris.query.\
+            join(Opera, Paris.opera_id == Opera.id_opera).\
+            filter(Opera.title.like("%{}%".format(title))).\
+            filter(Paris.opera_id == Opera.id_opera).\
+            filter((func.date(Paris.date_performance) >= start_results)).\
+            add_columns(Opera.title, Paris.date_performance, Paris.age, Opera.acts, Opera.date_creation).\
+            order_by(Paris.date_performance).paginate(page, 8, False)
+        count = Paris.query.join(Opera, Paris.opera_id == Opera.id_opera).\
+            filter(Opera.title.like("%{}%".format(title))).\
+            filter(Paris.opera_id == Opera.id_opera).count()
+        next_url = url_for('main.paris_all', page=query.next_num, title=title, date=date) \
+            if query.has_next else None
+        prev_url = url_for('main.paris_all', page=query.prev_num, title=title, date=date) \
+            if query.has_prev else None
+    if not title:  # if not the result of a simple search
+        form = DateFilterForm(request.form)  # render the date filter form
         form_start = form.start.data
         form_end = form.end.data
-        if request.method == 'POST' and form.validate_on_submit():
+        if request.method == 'POST' and form.validate_on_submit():  # rewrite, reload URL with date filter form results
             if form_start > form_end:
                 flash("Erreur: Les dates sélectionnées ne sont pas valides. "
                       "Vérifier que la date de début soit avant la date de fin.")
             elif form_end > datetime.date(datetime.strptime('1849-12-31', '%Y-%m-%d')):
-                flash("La base de données a besoin d'une date avant 1850. Veuillez sélectionner une nouvelle date de fin.")
+                flash("La base de données a besoin d'une date avant 1850. "
+                      "Veuillez sélectionner une nouvelle date de fin.")
             elif form_start < datetime.date(datetime.strptime('1819-12-31', '%Y-%m-%d')):
                 flash(
-                    "La base de données a besoin d'une date après 1820. Veuillez sélectionner une nouvelle date de début.")
+                    "La base de données a besoin d'une date après 1820. "
+                    "Veuillez sélectionner une nouvelle date de début.")
             else:
                 return redirect(url_for('main.paris_all', start=form_start, end=form_end))
-        if key_start and key_end:
-            start = (datetime.strptime(str(key_start[:10]), "%Y-%m-%d")-timedelta(1))
+        if key_start and key_end:  # if the date filter form has been submitted
+            start = (datetime.strptime(str(key_start[:10]), "%Y-%m-%d") - timedelta(1))
             end = datetime.strptime(str(key_end[:10]), "%Y-%m-%d")
-            query = Paris.query.join(Opera, Paris.opera_id == Opera.id_opera).\
-                filter(Paris.opera_id == Opera.id_opera).\
-                filter(func.date(Paris.date_performance) >= start).filter(func.date(Paris.date_performance) <= end). \
+            query = Paris.query.\
+                join(Opera, Paris.opera_id == Opera.id_opera). \
+                filter(Paris.opera_id == Opera.id_opera). \
+                filter(func.date(Paris.date_performance) >= start).filter(func.date(Paris.date_performance) <= end).\
                 add_columns(Opera.title, Paris.date_performance, Paris.age, Opera.acts, Opera.date_creation). \
                 order_by(Paris.date_performance).paginate(page, 8, False)
-            count = len(
-                Paris.query.join(Opera, Paris.opera_id == Opera.id_opera). \
-                    filter(Paris.opera_id == Opera.id_opera). \
-                    filter(func.date(Paris.date_performance) >= start).filter(func.date(Paris.date_performance) <= end). \
-                    add_columns(Opera.title, Paris.date_performance, Paris.age, Opera.acts, Opera.date_creation). \
-                    order_by(Paris.date_performance).all())
+            count = len(Paris.query.join(Opera, Paris.opera_id == Opera.id_opera).
+                        filter(Paris.opera_id == Opera.id_opera).
+                        filter(func.date(Paris.date_performance) >= start).filter(
+                        func.date(Paris.date_performance) <= end).
+                        add_columns(Opera.title, Paris.date_performance, Paris.age, Opera.acts, Opera.date_creation).
+                        order_by(Paris.date_performance).all()
+                        )
             next_url = url_for('main.paris_all', page=query.next_num, start=start, end=end) if query.has_next else None
             prev_url = url_for('main.paris_all', page=query.prev_num, start=start, end=end) if query.has_prev else None
-        else:
+        else:  # if the page is not showing search results and does not have a date filter
             query = Paris.query. \
                 join(Opera, Paris.opera_id == Opera.id_opera). \
                 filter(Paris.opera_id == Opera.id_opera). \
@@ -295,16 +319,6 @@ def paris_all():
                 Paris.query.join(Opera, Paris.opera_id == Opera.id_opera).filter(Paris.opera_id == Opera.id_opera).all())
             next_url = url_for('main.paris_all', page=query.next_num) if query.has_next else None
             prev_url = url_for('main.paris_all', page=query.prev_num) if query.has_prev else None
-    else:
-        query = Paris.query.join(Opera, Paris.opera_id == Opera.id_opera).filter(
-            Paris.opera_id == Opera.id_opera).filter(Opera.title.like("%{}%".format(keyword))). \
-            add_columns(Opera.title, Paris.date_performance, Paris.age, Opera.acts, Opera.date_creation). \
-            order_by(Paris.date_performance).paginate(page, 8, False)
-        count = len(
-            Paris.query.join(Opera, Paris.opera_id == Opera.id_opera).filter(Paris.opera_id == Opera.id_opera).filter(
-                Opera.title.like("%{}%".format(keyword))).all())
-        next_url = url_for('main.paris_all', page=query.next_num, title=keyword) if query.has_next else None
-        prev_url = url_for('main.paris_all', page=query.prev_num, title=keyword) if query.has_prev else None
     return render_template('paris_all.html', query=query.items, count=count, next_url=next_url, prev_url=prev_url, form=form)
 
 

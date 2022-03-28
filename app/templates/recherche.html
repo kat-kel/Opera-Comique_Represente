@@ -12,14 +12,14 @@
     <p>Il y a {{province|length}} représentations enregistrées dont l'opéra répond à votre requête :</p>
         <ul>
             {% for i in province %}
-                <li><a href="{{url_for('main.contributions', title=i.title) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
+                <li><a href="{{url_for('main.contributions', title=i.title, date=i.date_performance.date()) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
             {% endfor %}
         </ul>
     <h4>L'Opéra-Comique à Paris</h4>
     <p>Il y a {{count}} représentations enregistrées dont l'opéra répond à votre requête :</p>
         <ul>
             {% for i in paris %}
-                <li><a href="{{url_for('main.paris_all', title=i.title) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
+                <li><a href="{{url_for('main.paris_all', title=i.title, date=i.date_performance.date()) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
             {% endfor %}
         </ul>
 
@@ -28,7 +28,7 @@
     <p>Il y a {{province|length}} représentations enregistrées dont l'opéra répond à votre requête :</p>
         <ul>
             {% for i in province %}
-                <li><a href="{{url_for('main.contributions', title=i.title) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
+                <li><a href="{{url_for('main.contributions', title=i.title, date=i.date_performance.date()) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
             {% endfor %}
         </ul>
 
@@ -37,7 +37,7 @@
     <p>Il y a {{count}} représentations enregistrées dont l'opéra répond à votre requête :</p>
         <ul>
             {% for i in paris %}
-                <li><a href="{{url_for('main.paris_all', title=i.title) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
+                <li><a href="{{url_for('main.paris_all', title=i.title, date=i.date_performance.date()) }}"> {{i.title}} ({{i.date_performance.date()}}) </a></li>
             {% endfor %}
         </ul>
 

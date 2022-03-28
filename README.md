@@ -2,7 +2,7 @@
 
 ## Requirements
 * python 3 --> [installation instructions](https://realpython.com/installing-python/)
-* virtualenv [installation instructions](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)
+* virtualenv --> [installation instructions](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)
 * git
 
 ## Instructions for mac, linux
